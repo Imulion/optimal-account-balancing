@@ -1,4 +1,4 @@
-use std::{fmt::Display, time::Instant};
+use std::fmt::Display;
 
 #[derive(Clone)]
 struct Transaction {
@@ -135,47 +135,54 @@ fn search_best_transaction(
     }
 }
 
-#[test]
-fn test_min_ddtdl() {
-    let persons = vec![
-        Person::new("Dave", 10.0),
-        Person::new("Dieter", 35.0),
-        Person::new("Thorben", 100.0),
-        Person::new("Daniel", 0.0),
-        Person::new("Leon", 0.0),
-    ];
-    let timer = Instant::now();
-    let result = get_minimum_transactions(persons);
-    let base_time = timer.elapsed();
-    println!("it took  ({base_time:.1?})");
-    assert!(result.is_some());
-    assert_eq!(result.unwrap().len(), 4);
-}
+#[cfg(test)]
+mod tests {
+    use std::time::Instant;
 
-#[test]
-fn test_min_daniel() {
-    let persons = vec![
-        Person::new("Daniel", 13.0),
-        Person::new("Thorben", 7.0),
-        Person::new("Leon", 3.0),
-        Person::new("Patrick", 7.0),
-        Person::new("Michael", 0.0),
-        Person::new("Jonas", 0.0),
-    ];
-    let p1 = persons.clone();
-    let timer = Instant::now();
-    let result = get_minimum_transactions(persons);
-    let base_time = timer.elapsed();
+    use super::*;
 
-    println!("it took  ({base_time:.1?})");
-    assert!(result.is_some());
-    let transactions = result.unwrap();
-    println!(
-        "Minimum Number of Transactions found: {}",
-        transactions.len()
-    );
-    transactions.iter().for_each(|transaction| {
-        transaction.print(&p1);
-    });
-    assert_eq!(transactions.len(), 4);
+    #[test]
+    fn test_min_ddtdl() {
+        let persons = vec![
+            Person::new("Dave", 10.0),
+            Person::new("Dieter", 35.0),
+            Person::new("Thorben", 100.0),
+            Person::new("Daniel", 0.0),
+            Person::new("Leon", 0.0),
+        ];
+        let timer = Instant::now();
+        let result = get_minimum_transactions(persons);
+        let base_time = timer.elapsed();
+        println!("it took  ({base_time:.1?})");
+        assert!(result.is_some());
+        assert_eq!(result.unwrap().len(), 4);
+    }
+
+    #[test]
+    fn test_min_daniel() {
+        let persons = vec![
+            Person::new("Daniel", 13.0),
+            Person::new("Thorben", 7.0),
+            Person::new("Leon", 3.0),
+            Person::new("Patrick", 7.0),
+            Person::new("Michael", 0.0),
+            Person::new("Jonas", 0.0),
+        ];
+        let p1 = persons.clone();
+        let timer = Instant::now();
+        let result = get_minimum_transactions(persons);
+        let base_time = timer.elapsed();
+
+        println!("it took  ({base_time:.1?})");
+        assert!(result.is_some());
+        let transactions = result.unwrap();
+        println!(
+            "Minimum Number of Transactions found: {}",
+            transactions.len()
+        );
+        transactions.iter().for_each(|transaction| {
+            transaction.print(&p1);
+        });
+        assert_eq!(transactions.len(), 4);
+    }
 }
